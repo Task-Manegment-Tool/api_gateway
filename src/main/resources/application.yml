@@ -1,22 +1,25 @@
 server:
-  port: 8081
+  port: 9010
+
 spring:
-  config:
-    import: optional:configserver:http://localhost:8888/
   application:
     name: api-gateway
   cloud:
     gateway:
       mvc:
         routes:
-          - id: // unique identifier for this route
-            uri: // destination uri for the route
-            predicates: // list of conditions that the incoming request must match for this route to be applied
-              -Path=
-#    config:
-#      uri:
-#        - http://localhost:8888/
-#eureka:
-#  client:
-#    fetch-registry: true
-#    register-with-eureka: true
+          - id: user-service-public
+            uri: lb://user-service
+            predicates:
+              - Path=/public/users/**
+          - id: user-service-private
+            uri: lb://user-service
+            predicates:
+              - Path=/private/users/**
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
