@@ -8,14 +8,34 @@ spring:
     gateway:
       mvc:
         routes:
+          - id: kanban-service
+            uri: lb://kanban-service
+            predicates:
+              - Path=/kanban/**
+
+
+          - id: task-service
+            uri: lb://task-service
+            predicates:
+              - Path=/task/**
+
+          - id: project-service
+            uri: lb://project-service
+            predicates:
+              - Path=/project/**
+
           - id: user-service-public
             uri: lb://user-service
             predicates:
               - Path=/public/users/**
+
           - id: user-service-private
             uri: lb://user-service
             predicates:
               - Path=/private/users/**
+
+
+
 
 
 
